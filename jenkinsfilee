@@ -56,7 +56,7 @@ pipeline {
           steps {
              script {
               sh '''
-                cd jen-pip
+                cd jen-pip/
                 docker build -t hello-world
                 docker push hello-world
                 docker rmi hello-world
