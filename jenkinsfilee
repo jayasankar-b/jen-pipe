@@ -52,22 +52,31 @@ pipeline {
           } */
         }
       }
-    stage('docker file') {
-      steps {
-        script {
-          cmd_exec( 'docker build . && docker run -p 8080:8080')
-          stash includes: '*', name: 'sourceCode'
+      stage ('Docker-image-build') {
+          steps {
+             script {
+              sh '''
+                cd jen-pip
+                docker build -t hello-world
+                docker push hello-world
+                docker rmi hello-world
+              '''
         }
       }
     }
-    }
+     stage ('Deploy Docker image') {
+          steps {
+             script {
+              sh '''
+                docker pull hello-world
+                docker run -d --name db -p 80918093:8091-8093 -p 11210:11210 hello-world:latest
+             '''   
     stage('Jacoco Result'){
       steps{
         script {
           cmd_exec('echo "Run the Jacoco result"')
           //unstash 'artifacts'
           //jacoco deltaBranchCoverage: '70', deltaClassCoverage: '100', deltaComplexityCoverage: '70', deltaInstructionCoverage: '70', deltaLineCoverage: '70', deltaMethodCoverage: '70', maximumBranchCoverage: '70', maximumClassCoverage: '100', maximumComplexityCoverage: '70', maximumInstructionCoverage: '70', maximumLineCoverage: '70', maximumMethodCoverage: '70'
-        }
       }
     }
   }
