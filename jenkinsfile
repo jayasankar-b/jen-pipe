@@ -22,7 +22,7 @@ pipeline {
     stage('Jira-ID Check') {
       steps {
         script {
-          echo "To check the Jira story ID"
+          echo "check the Jira story ID"
           }
         }
       }
