@@ -1,0 +1,23 @@
+---
+
+- name: install Ngnix and clone app
+  hosts: all
+  become: true
+  
+  tasks:
+    - name: install ngnix
+      package:
+        name: ngnix
+        state: present
+    - name: install git
+      package:
+        name: git
+        state: present
+    - name: remove existing app directory
+      file: 
+        path: /var/www/html
+        state: absent
+    - name: clone the code
+      git:
+        repo: http://github.com/akracad/ecom.com
+        path: /var/www/html
